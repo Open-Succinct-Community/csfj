@@ -10,7 +10,7 @@ Think of a combination lock with n digits, how would you guess the lock sequence
 * Instantiate a solver for your problem
 * solver.nextSolution() can be called as many times as the number of solutions you need. 
  
-## examples
+## Examples
 Examples may be found by browsing the tests folder. 
 
 
