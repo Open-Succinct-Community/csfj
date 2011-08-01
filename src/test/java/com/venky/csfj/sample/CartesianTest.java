@@ -85,7 +85,6 @@ public class CartesianTest {
         seed.put(y, 2);
         
         p.addConstraint(new Constraint<IntegerEnumeratedVariable,Integer>() {
-            @Override
             public void propagate(VariableAssignment<IntegerEnumeratedVariable,Integer> workingAssignment, List<VariableAssignment<IntegerEnumeratedVariable,Integer>> assigned, List<VariableAssignment<IntegerEnumeratedVariable,Integer>> unassigned) throws ConstraintViolationException {
                 int sum = 6 ; 
                 sum -= workingAssignment.getValue();

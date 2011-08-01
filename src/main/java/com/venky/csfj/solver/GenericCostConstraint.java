@@ -24,7 +24,7 @@ public class GenericCostConstraint<V extends Variable<DT>,DT> implements Constra
     }
     
 
-    @Override
+    
     public void propagate(VariableAssignment<V, DT> workingAssignment, List<VariableAssignment<V, DT>> assigned, List<VariableAssignment<V, DT>> unassigned) throws ConstraintViolationException {
         if (minCost == null){
             return;

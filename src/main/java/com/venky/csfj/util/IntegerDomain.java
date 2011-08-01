@@ -23,17 +23,14 @@ public class IntegerDomain implements Domain<Integer>{
         assert min <= (max + 1); 
         
     }
-    @Override
     public boolean contains(Object value) {
         return value != null &&  min <= (Integer)value  && (Integer)value <= max;
     }
 
-    @Override
     public Integer peek() {
         return max;
     }
 
-    @Override
     public Integer pop() {
         int ret = max; 
         max = max - 1;
@@ -42,12 +39,10 @@ public class IntegerDomain implements Domain<Integer>{
         }
         return ret;
     }
-    @Override
     public boolean isEmpty(){
         return max < min;
     }
 
-    @Override
     public Integer push(Integer value) {
         if (isEmpty()) {
             min = value; 
@@ -60,17 +55,14 @@ public class IntegerDomain implements Domain<Integer>{
         return value;
     }
 
-    @Override
     public Iterator<Integer> iterator() {
         return new IDIterator(min,max);
     }
 
-    @Override
     public int size() {
         return isEmpty()? 0 : max - min + 1;
     }
 
-    @Override
     public Integer get(int i) {
         if (isEmpty()) { 
            throw new NoSuchElementException(); 
@@ -79,7 +71,6 @@ public class IntegerDomain implements Domain<Integer>{
         }
     }
 
-    @Override
     public int indexOf(Object value) {
         if (contains(value)){
             return (Integer)value - min;
@@ -88,7 +79,6 @@ public class IntegerDomain implements Domain<Integer>{
         }
     }
 
-    @Override
     public boolean remove(Object value) {
         Integer v =  (Integer)value; 
         if (v == max){
@@ -99,7 +89,6 @@ public class IntegerDomain implements Domain<Integer>{
         }
     }
 
-    @Override
     public void clear() {
         max = min -1 ;
     }
@@ -112,12 +101,10 @@ public class IntegerDomain implements Domain<Integer>{
             this.max = max; 
             this.current = min;
         }
-        @Override
         public boolean hasNext() {
             return max >= min && current <= max ;
         }
 
-        @Override
         public Integer next() {
             if (min > current || current > max ) {
                 throw new NoSuchElementException();
@@ -127,7 +114,6 @@ public class IntegerDomain implements Domain<Integer>{
             return ret;
         }
 
-        @Override
         public void remove() {
             throw new UnsupportedOperationException("Not supported yet.");
         }

@@ -64,7 +64,6 @@ public class Problem<V extends Variable<DT>,DT> {
     public void sortUnassignedVariables(List<VariableAssignment<V,DT>> assigned, List<VariableAssignment<V,DT>> unassigned){
         Collections.sort(unassigned,new Comparator <VariableAssignment<V,DT>>(){
 
-            @Override
             public int compare(VariableAssignment<V,DT> o1, VariableAssignment<V,DT> o2) {
                 int ret = o2.getDomain().size() - o1.getDomain().size(); // sort decending as we are using stack 
                 if (ret == 0) {

@@ -57,7 +57,6 @@ public class Sudoku extends Problem<Sudoku.CellVariable,Integer>{
     }
 
     public class RowColumnConstraint implements Constraint<CellVariable,Integer>{
-        @Override
         public void propagate(VariableAssignment<CellVariable,Integer> workingAssignment, List<VariableAssignment<CellVariable,Integer>> assigned, List<VariableAssignment<CellVariable,Integer>> unassigned) throws ConstraintViolationException {
             CellVariable c1 = (CellVariable)workingAssignment.getVariable();
             for (VariableAssignment<CellVariable,Integer> uv : unassigned){

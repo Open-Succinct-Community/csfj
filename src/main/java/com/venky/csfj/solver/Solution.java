@@ -19,7 +19,11 @@ import java.util.TreeSet;
  */
 public class Solution<V extends Variable<DT>,DT> extends HashMap<V,DT> implements Comparable<Solution<V,DT>>, Cloneable, Serializable{
 
-    private transient Problem<V,DT> problem = null;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8121089109097870863L;
+	private transient Problem<V,DT> problem = null;
     private transient Double cost = null; 
     
     
@@ -66,7 +70,6 @@ public class Solution<V extends Variable<DT>,DT> extends HashMap<V,DT> implement
         return assignmentMap;
     }
     
-    @Override
     public int compareTo(Solution<V, DT> o) {
         int ret = 0;
         if (ret == 0){

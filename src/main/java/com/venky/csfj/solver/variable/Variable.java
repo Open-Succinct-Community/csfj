@@ -17,7 +17,11 @@ import com.venky.csfj.util.Domain;
  */
 public class Variable<DT> implements Comparable<Variable<DT>>,Serializable{
     
-    public static final String NAME = "NAME"; 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8857856509616767307L;
+	public static final String NAME = "NAME"; 
     private Domain<DT> domain;
     public Variable(String name, Domain<DT> domain) {
         this.domain = domain;
@@ -30,7 +34,6 @@ public class Variable<DT> implements Comparable<Variable<DT>>,Serializable{
         return domain;
     }
 
-    @Override
     public int compareTo(Variable<DT> o) {
         return getName().compareTo(o.getName());
     }

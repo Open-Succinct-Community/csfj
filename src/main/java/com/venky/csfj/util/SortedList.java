@@ -137,9 +137,9 @@ public class SortedList<C> extends ArrayList<C> implements Comparator<C>{
         throw new UnsupportedOperationException("Cannot add to specific index of Sorted List");
     }
 
-    @Override
     public int compare(C o1, C o2) {
-        Comparable<? super C> c1 = (Comparable<? super C>)o1; 
+        @SuppressWarnings("unchecked")
+		Comparable<? super C> c1 = (Comparable<? super C>)o1; 
         return c1.compareTo(o2);
     }
     
