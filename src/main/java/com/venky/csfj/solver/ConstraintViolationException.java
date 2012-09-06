@@ -5,7 +5,6 @@
 
 package com.venky.csfj.solver;
 
-import com.venky.csfj.solver.variable.Variable;
 import com.venky.csfj.solver.variable.VariableAssignment;
 
 /**
@@ -15,7 +14,11 @@ import com.venky.csfj.solver.variable.VariableAssignment;
 public class ConstraintViolationException extends RuntimeException{
 
 
-    public ConstraintViolationException(String message){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1905266176269659639L;
+	public ConstraintViolationException(String message){
         this(message,null);
     }
     

@@ -49,7 +49,11 @@ public class Sudoku extends Problem<Sudoku.CellVariable,Integer>{
 
 
     public static class CellVariable extends Variable<Integer>{
-        public final int row, col ;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -8078816158937529209L;
+		public final int row, col ;
         public CellVariable(int row, int col){
             super(row + "," + col,new IntegerEnumeratedDomain(1,9));
             this.row = row; this.col = col;

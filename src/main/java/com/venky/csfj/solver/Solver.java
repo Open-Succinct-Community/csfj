@@ -4,15 +4,14 @@
  */
 package com.venky.csfj.solver;
 
-import com.venky.csfj.solver.variable.Variable;
-import com.venky.csfj.solver.variable.VariableAssignment;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
+
+import com.venky.csfj.solver.variable.Variable;
+import com.venky.csfj.solver.variable.VariableAssignment;
 import com.venky.csfj.util.Domain;
 
 /**

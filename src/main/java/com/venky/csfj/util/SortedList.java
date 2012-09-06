@@ -15,7 +15,11 @@ import java.util.Iterator;
  * @author venky
  */
 public class SortedList<C> extends ArrayList<C> implements Comparator<C>{
-    private final Comparator<? super C> comparator; 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1012502806760345149L;
+	private final Comparator<? super C> comparator; 
     public SortedList(Comparator<? super C> comparator){
         this.comparator = comparator;
     }

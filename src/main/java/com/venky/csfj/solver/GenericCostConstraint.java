@@ -4,9 +4,11 @@
  */
 package com.venky.csfj.solver;
 
+import java.util.List;
+
+import com.venky.core.util.Bucket;
 import com.venky.csfj.solver.variable.Variable;
 import com.venky.csfj.solver.variable.VariableAssignment;
-import java.util.List;
 
 /**
  *
@@ -29,14 +31,30 @@ public class GenericCostConstraint<V extends Variable<DT>,DT> implements Constra
         if (minCost == null){
             return;
         }
-        Solution<V,DT> partial = new Solution<V, DT>(this.problem); 
-        partial.merge(assigned);
-        partial.merge(workingAssignment);
-        double costSoFar = problem.getCost(partial);
-        if (costSoFar >= minCost){
-            throw new ConstraintViolationException("Cost must be less than minimum Cost");
+        VariableAssignment<V, DT> lastAssignment = null; 
+        Bucket costSoFar = null ;
+        if (!assigned.isEmpty()) {
+        	lastAssignment = assigned.get(assigned.size()-1);
+        	costSoFar = (Bucket)lastAssignment.getAttribute("costSoFar");
+    		costSoFar = costSoFar.clone();
+        }else {
+        	costSoFar = new Bucket(0);
         }
         
+        costSoFar.increment(problem.getCost(workingAssignment));
+        if (costSoFar.value() >= minCost){
+            throw new ConstraintViolationException("Cost must be less than minimum Cost");
+        }
+        workingAssignment.setAttribute("costSoFar", costSoFar);
+        
+        if (unassigned.isEmpty()){
+            Solution<V,DT> partial = new Solution<V, DT>(this.problem); 
+            partial.merge(assigned);
+            partial.merge(workingAssignment);
+            if (problem.getCost(partial) >= minCost){
+                throw new ConstraintViolationException("Cost must be less than minimum Cost");
+            }
+        }
     }
     
 }

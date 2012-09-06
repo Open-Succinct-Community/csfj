@@ -88,6 +88,9 @@ public class Problem<V extends Variable<DT>,DT> {
     public double getCost(Solution<V,DT> solution){
         return 0.0;
     }
+    public double getCost(VariableAssignment<V, DT> assignment){
+    	return 0.0;
+    }
 
     private boolean costToBeMinimized = false;
 

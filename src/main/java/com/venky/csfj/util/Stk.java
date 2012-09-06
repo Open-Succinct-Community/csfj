@@ -12,5 +12,10 @@ import java.util.Stack;
  */
 public class Stk<T> extends Stack<T> implements Domain<T>{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3620254157425340483L;
+
     
 }

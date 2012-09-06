@@ -13,7 +13,11 @@ import com.venky.csfj.solver.variable.VariableAssignment;
  */
 public class NoMoreValuesToTryException extends RuntimeException{
 
-    public NoMoreValuesToTryException(String message){ 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6854658242123492986L;
+	public NoMoreValuesToTryException(String message){ 
         this(message,null);
     }
     public NoMoreValuesToTryException(String message,VariableAssignment culprit) {

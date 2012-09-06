@@ -71,9 +71,9 @@ public class VariableAssignment<V extends Variable<DT>, DT> {
         return checkpoints.peek().getAttribute(name);
     }
 
-    private class Checkpoint<DT> {
+    private class Checkpoint<T> {
 
-        private Domain<DT> domain;
+        private Domain<T> domain;
         private Map<String,Object> attributes = null ;
         public void setAttribute(String name,Object value){
             if (attributes == null){
@@ -89,22 +89,22 @@ public class VariableAssignment<V extends Variable<DT>, DT> {
             }
         }
 
-        public Checkpoint(Checkpoint<DT> another){
+        public Checkpoint(Checkpoint<T> another){
             this(another.getDomain());
         }
-        public Checkpoint(Domain<DT> domain) {
+        public Checkpoint(Domain<T> domain) {
             try {
                 this.domain = domain.getClass().newInstance();
             }catch (Exception ex){
                 throw new RuntimeException(ex);
             }
-            Iterator<DT> i = domain.iterator(); 
+            Iterator<T> i = domain.iterator(); 
             while (i.hasNext()){
                 this.domain.push(i.next());
             }
         }
 
-        public Domain<DT> getDomain() {
+        public Domain<T> getDomain() {
             return domain;
         }
     }

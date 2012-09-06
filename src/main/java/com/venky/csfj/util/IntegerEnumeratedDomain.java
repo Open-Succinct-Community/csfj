@@ -9,7 +9,11 @@ package com.venky.csfj.util;
  * @author venky
  */
 public class IntegerEnumeratedDomain extends Stk<Integer> implements Domain<Integer>{
-    public IntegerEnumeratedDomain(){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2758966350008104467L;
+	public IntegerEnumeratedDomain(){
     }
     public IntegerEnumeratedDomain(int min, int max){
         assert min <= max ;

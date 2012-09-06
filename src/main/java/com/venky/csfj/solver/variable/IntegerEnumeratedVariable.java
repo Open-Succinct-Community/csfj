@@ -11,7 +11,12 @@ import com.venky.csfj.util.IntegerEnumeratedDomain;
  * @author venky
  */
 public class IntegerEnumeratedVariable extends Variable<Integer> {
-    public IntegerEnumeratedVariable(String name,int min, int max){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3007898661653649310L;
+
+	public IntegerEnumeratedVariable(String name,int min, int max){
         super(name,new IntegerEnumeratedDomain(min,max));
     }
 }
