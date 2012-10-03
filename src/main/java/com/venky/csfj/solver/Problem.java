@@ -5,8 +5,6 @@
 
 package com.venky.csfj.solver;
 
-import com.venky.csfj.solver.variable.Variable;
-import com.venky.csfj.solver.variable.VariableAssignment;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,6 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+
+import com.venky.csfj.solver.variable.Variable;
+import com.venky.csfj.solver.variable.VariableAssignment;
 
 /**
  *
@@ -85,10 +86,7 @@ public class Problem<V extends Variable<DT>,DT> {
         this.timeOut = timeOut;
     }
 
-    public double getCost(Solution<V,DT> solution){
-        return 0.0;
-    }
-    public double getCost(VariableAssignment<V, DT> assignment){
+    public double getCost(VariableAssignment<V, DT> workingAssignment,List<VariableAssignment<V, DT>> assigned, List<VariableAssignment<V, DT>> unassigned){
     	return 0.0;
     }
 

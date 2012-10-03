@@ -78,6 +78,10 @@ public class IntegerDomain implements Domain<Integer>{
             return -1;
         }
     }
+	@Override
+	public int lastIndexOf(Object value) {
+		return indexOf(value);
+	} 
 
     public boolean remove(Object value) {
         Integer v =  (Integer)value; 
@@ -118,6 +122,7 @@ public class IntegerDomain implements Domain<Integer>{
             throw new UnsupportedOperationException("Not supported yet.");
         }
         
-    } 
+    }
+
     
 }

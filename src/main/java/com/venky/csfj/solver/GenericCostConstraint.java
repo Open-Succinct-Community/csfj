@@ -25,8 +25,10 @@ public class GenericCostConstraint<V extends Variable<DT>,DT> implements Constra
         this.minCost = minCost;
     }
     
+    public Double getMinCost(){
+    	return minCost;
+    }
 
-    
     public void propagate(VariableAssignment<V, DT> workingAssignment, List<VariableAssignment<V, DT>> assigned, List<VariableAssignment<V, DT>> unassigned) throws ConstraintViolationException {
         VariableAssignment<V, DT> lastAssignment = null; 
         Bucket costSoFar = null ;
@@ -38,22 +40,14 @@ public class GenericCostConstraint<V extends Variable<DT>,DT> implements Constra
         	costSoFar = new Bucket(0);
         }
         
-        costSoFar.increment(problem.getCost(workingAssignment));
-        if (minCost != null ){
-        	if (unassigned.isEmpty()){
-	        	Solution<V,DT> solution = new Solution<V, DT>(this.problem); 
-	            solution.merge(assigned);
-	            solution.merge(workingAssignment);
-	            if (solution.getCost() >= minCost){
-	                throw new ConstraintViolationException("Cost must be less than minimum Cost");
-	            }
-        	}else if (costSoFar.value() >= minCost){
-                throw new ConstraintViolationException("Cost must be less than minimum Cost");
-        	}
+        costSoFar.increment(problem.getCost(workingAssignment,assigned,unassigned));
+        if (minCost != null && costSoFar.value() >= minCost){
+            throw new ConstraintViolationException("Cost must be less than minimum Cost");
         }
-
         workingAssignment.setAttribute("costSoFar", costSoFar);
-        
+        if (unassigned.isEmpty()){
+        	minCost = costSoFar.doubleValue();
+        }
     }
     
 }

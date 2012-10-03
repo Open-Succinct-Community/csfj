@@ -47,7 +47,7 @@ public class Counter implements Cloneable{
             if (newValue <= max  && newValue >= min ) {
                 counter += by; 
             }else { 
-                throw new ConstraintViolationException("Cannot increment beyond max");
+                throw new ConstraintViolationException("Attempting to stretch beyond bounds.");
             }
         }
     }

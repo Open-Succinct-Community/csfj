@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
+
 import com.venky.csfj.util.Domain;
 
 /**
@@ -40,9 +41,9 @@ public class VariableAssignment<V extends Variable<DT>, DT> {
     public void createCheckpoint() {
         Checkpoint<DT> checkpoint = null;
         if (this.checkpoints.empty()) {
-            checkpoint = new Checkpoint(variable.getDomain());
+            checkpoint = new Checkpoint<DT>(variable.getDomain());
         } else {
-            checkpoint = new Checkpoint(checkpoints.peek());
+            checkpoint = new Checkpoint<DT>(checkpoints.peek());
         }
         this.checkpoints.push(checkpoint);
     }
@@ -92,7 +93,8 @@ public class VariableAssignment<V extends Variable<DT>, DT> {
         public Checkpoint(Checkpoint<T> another){
             this(another.getDomain());
         }
-        public Checkpoint(Domain<T> domain) {
+        @SuppressWarnings("unchecked")
+		public Checkpoint(Domain<T> domain) {
             try {
                 this.domain = domain.getClass().newInstance();
             }catch (Exception ex){

@@ -68,9 +68,6 @@ public class Solver<V extends Variable<DT>, DT> {
         try {
             backTrack();
             Solution<V,DT> solution = solveVariables(bias);
-            if (costConstraint != null){
-                costConstraint.setMinCost(solution.getCost());
-            }
             return solution;
         } catch (NoMoreValuesToTryException e) {
             return null;
@@ -136,7 +133,9 @@ public class Solver<V extends Variable<DT>, DT> {
         long now = System.currentTimeMillis();
         long elapsedTime = now - start;
         Solution<V,DT> solution = new Solution<V, DT>(problem).merge(assignedVariables);
-
+        if (costConstraint != null){
+        	solution.setCost(costConstraint.getMinCost());
+        }
         if (!isSolutionInBias(solution, bias)){
             problem.println("Solution of cost " + (int)solution.getCost() + " found. Elapsed Time :" + elapsedTime);
         }

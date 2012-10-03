@@ -96,9 +96,13 @@ public class Solution<V extends Variable<DT>,DT> extends HashMap<V,DT> implement
     
     public double getCost(){
         if (cost == null){
-            cost = problem.getCost(this);  
+            cost = 0.0;  
         }
         return cost;
+    }
+    
+    public void setCost(double cost){
+    	this.cost = cost;
     }
     
     private void resetComputedFields(){ 

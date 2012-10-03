@@ -10,7 +10,7 @@ import java.util.Iterator;
  *
  * @author venky
  */
-public interface Domain<T> {
+public interface Domain<T> extends Iterable<T> {
     public boolean contains(Object value);
     public T peek();
     public T pop();
@@ -20,6 +20,7 @@ public interface Domain<T> {
     public int size();
     public T get(int i);
     public int indexOf(Object value);
+    public int lastIndexOf(Object value);
     public boolean remove(Object value);
     public void clear();
 }

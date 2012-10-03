@@ -68,11 +68,13 @@ public class SortedList<C> extends ArrayList<C> implements Comparator<C>{
         return search(o) > 0;
     }
     
-    private int search(Object o){
+    @SuppressWarnings("unchecked")
+	private int search(Object o){
         return Collections.binarySearch(this, (C)o, getComparator());
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public int indexOf(Object o) {
         int index = search(o);
         if (index < 0){
@@ -90,7 +92,8 @@ public class SortedList<C> extends ArrayList<C> implements Comparator<C>{
         }
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public int lastIndexOf(Object o) {
         int index = indexOf(o); 
         int ret = index; 
