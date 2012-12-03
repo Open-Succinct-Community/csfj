@@ -18,7 +18,7 @@ import com.venky.csfj.util.IntegerEnumeratedDomain;
  *
  * @author Venky
  */
-public class Sudoku extends Problem<Sudoku.CellVariable,Integer>{
+public class Sudoku extends Problem<Integer>{
 
     private CellVariable[][] cell = new CellVariable[9][9];
     public Sudoku() {
@@ -60,10 +60,10 @@ public class Sudoku extends Problem<Sudoku.CellVariable,Integer>{
         }
     }
 
-    public class RowColumnConstraint implements Constraint<CellVariable,Integer>{
-        public void propagate(VariableAssignment<CellVariable,Integer> workingAssignment, List<VariableAssignment<CellVariable,Integer>> assigned, List<VariableAssignment<CellVariable,Integer>> unassigned) throws ConstraintViolationException {
-            CellVariable c1 = (CellVariable)workingAssignment.getVariable();
-            for (VariableAssignment<CellVariable,Integer> uv : unassigned){
+    public class RowColumnConstraint implements Constraint<Integer>{
+        public void propagate(VariableAssignment<Integer> workingAssignment, List<VariableAssignment<Integer>> assigned, List<VariableAssignment<Integer>> unassigned) throws ConstraintViolationException {
+            CellVariable c1 = workingAssignment.getVariable();
+            for (VariableAssignment<Integer> uv : unassigned){
                 CellVariable c2 = (CellVariable)uv.getVariable();
                 if ((c1.row == c2.row) || (c1.col == c2.col) || isSameGrid(c1, c2)){
                     uv.getDomain().remove(workingAssignment.getValue());

@@ -29,20 +29,21 @@ import com.venky.csfj.util.SortedList;
  */
 public class Population<V extends Variable<DT>,DT> {
     private final Random generator = new Random();
-    private final Problem<V,DT> problem ;
+    private final Problem<DT> problem ;
     private int populationSize; 
     private SortedList<Solution<V,DT>> members ;
-    public Population(final Problem<V,DT> problem,int populationSize){
+    public Population(final Problem<DT> problem,int populationSize){
         this.problem = problem;
         this.populationSize = populationSize;
-        this.members = new SortedList<Solution<V, DT>>();
+        this.members = new SortedList<Solution<V,DT>>();
     }
 
     public int getPopulationSize() {
         return populationSize;
     }
     
-    public int loadMembers(ObjectInputStream in) throws IOException,ClassNotFoundException{
+    @SuppressWarnings("unchecked")
+	public int loadMembers(ObjectInputStream in) throws IOException,ClassNotFoundException{
         Map<String,DT> assignmentMap = null;
         try {
             do {
@@ -101,11 +102,12 @@ public class Population<V extends Variable<DT>,DT> {
         return this;
     }
     
-    private Population<V,DT> evolveOneGeneraton(){
+    @SuppressWarnings("unchecked")
+	private Population<V,DT> evolveOneGeneraton(){
         int populationBeforeEvolution = members.size();
         List<Solution<V,DT>> nextGeneration = new ArrayList<Solution<V, DT>>();
         do {
-            Solver<V,DT> solver = new Solver<V, DT>(problem);
+            Solver<DT> solver = new Solver<DT>(problem);
             Solution<V,DT> newMember = solver.nextSolution(selectFitMember(),selectFitMember());
             if (newMember != null){
                 nextGeneration.add(newMember);
@@ -150,7 +152,8 @@ public class Population<V extends Variable<DT>,DT> {
         computeStatistics();
     }
     
-    private List<Solution<V,DT>> createHeuristicSolutions(int maxHeuristicSolutions){
+    @SuppressWarnings("unchecked")
+	private List<Solution<V,DT>> createHeuristicSolutions(int maxHeuristicSolutions){
         List<Solution<V,DT>>  heuristicSolutions = new ArrayList<Solution<V, DT>>();
         
         if (maxHeuristicSolutions <= 0){
@@ -165,7 +168,7 @@ public class Population<V extends Variable<DT>,DT> {
         Solution<V,DT> heuristicSolution =  null;
         System.out.println("Creating heuristic solutions");
         if (members.isEmpty()){
-            Solver<V,DT> solver = new Solver<V, DT>(problem);
+            Solver<DT> solver = new Solver<DT>(problem);
             while (((heuristicSolution = solver.nextSolution()) != null) && heuristicSolutions.size() < maxHeuristicSolutions){
                 heuristicSolutions.add(heuristicSolution);
                 System.out.println(heuristicSolutions.size());
@@ -173,7 +176,7 @@ public class Population<V extends Variable<DT>,DT> {
         }else{
             boolean [] solverFlagsForSortingUnassigedVariables = new boolean[] { true , false} ; 
             for (int i = 0 ; i < solverFlagsForSortingUnassigedVariables.length ; i ++ ){
-                Solver<V,DT> solver = new Solver<V, DT>(problem);
+                Solver<DT> solver = new Solver<DT>(problem);
                 solver.solve(bestSolution()) ;
                 while((heuristicSolution = solver.nextSolution()) != null && heuristicSolutions.size() < maxHeuristicSolutions){
                     heuristicSolutions.add(heuristicSolution);
@@ -190,15 +193,16 @@ public class Population<V extends Variable<DT>,DT> {
     }
 
 
-    private Solution<V,DT> createMember(){ 
+    @SuppressWarnings("unchecked")
+	private Solution<V,DT> createMember(){ 
         
         Solution<V,DT> partialSolution = new Solution<V, DT>(problem);
-        for (V v :problem.getVariables()){ 
+        for (Variable<DT> v :problem.getVariables()){ 
             Domain<DT> domain = v.getDomain();
             int index = generator.nextInt(domain.size());
-            partialSolution.put(v, domain.get(index));
+            partialSolution.put((V)v, domain.get(index));
         }
-        Solver<V,DT> solver = new Solver<V,DT>(problem);
+        Solver<DT> solver = new Solver<DT>(problem);
         Solution<V,DT> solution = solver.solve(partialSolution); 
         
         solver = null;

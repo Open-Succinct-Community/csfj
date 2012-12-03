@@ -5,14 +5,14 @@
 
 package com.venky.csfj.solver;
 
-import com.venky.csfj.solver.variable.Variable;
-import com.venky.csfj.solver.variable.VariableAssignment;
 import java.util.List;
+
+import com.venky.csfj.solver.variable.VariableAssignment;
 
 /**
  *
  * @author Venky
  */
-public interface Constraint<V extends Variable<DT>,DT> {
-    public  void propagate(VariableAssignment<V,DT> workingAssignment, List<VariableAssignment<V,DT>> assigned, List<VariableAssignment<V,DT>> unassigned) throws ConstraintViolationException ;
+public interface Constraint<DT> {
+    public  void propagate(VariableAssignment<DT> workingAssignment, List<VariableAssignment<DT>> assigned, List<VariableAssignment<DT>> unassigned) throws ConstraintViolationException ;
 }

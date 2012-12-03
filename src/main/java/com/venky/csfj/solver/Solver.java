@@ -18,23 +18,23 @@ import com.venky.csfj.util.Domain;
  *
  * @author Venky
  */
-public class Solver<V extends Variable<DT>, DT> {
+public class Solver<DT> {
 
-    private Problem<V, DT> problem;
-    private Stack<VariableAssignment<V, DT>> assignedVariables;
-    private Stack<VariableAssignment<V, DT>> unAssignedVariables;
-    private final GenericCostConstraint<V,DT> costConstraint; 
+    private Problem<DT> problem;
+    private Stack<VariableAssignment<DT>> assignedVariables;
+    private Stack<VariableAssignment<DT>> unAssignedVariables;
+    private final GenericCostConstraint<DT> costConstraint; 
             
 
-    public Solver(Problem<V, DT> problem) {
+    public Solver(Problem<DT> problem) {
         this.problem = problem;
-        this.assignedVariables = new Stack<VariableAssignment<V, DT>>();
-        this.unAssignedVariables = new Stack<VariableAssignment<V, DT>>();
+        this.assignedVariables = new Stack<VariableAssignment<DT>>();
+        this.unAssignedVariables = new Stack<VariableAssignment<DT>>();
         for (Variable<DT> variable : problem.getVariables()) {
-            pushUnAssignedVariable(new VariableAssignment(variable));
+            pushUnAssignedVariable(new VariableAssignment<DT>(variable));
         }
         if (problem.isCostToBeMinimized()){
-            this.costConstraint = new GenericCostConstraint<V, DT>(problem);
+            this.costConstraint = new GenericCostConstraint<DT>(problem);
         }else {
             this.costConstraint = null;
         }
@@ -42,12 +42,13 @@ public class Solver<V extends Variable<DT>, DT> {
     }
 
     public final void createCheckPoints() {
-        for (VariableAssignment<V, DT> unAssignedVariable : unAssignedVariables) {
+        for (VariableAssignment<DT> unAssignedVariable : unAssignedVariables) {
             unAssignedVariable.createCheckpoint();
         }
     }
 
-    public Solution<V, DT> nextSolution(Solution<V,DT>... bias) {
+    @SuppressWarnings("unchecked")
+	public <V extends Variable<DT>> Solution<V, DT> nextSolution(Solution<V,DT>... bias) {
         Solution<V,DT> solution =  solve(bias);
         if (solution != null && bias != null && bias.length > 0 && isSolutionInBias(solution, bias)) {
             solution = solve();
@@ -55,7 +56,7 @@ public class Solver<V extends Variable<DT>, DT> {
         return solution;
     }
     
-    private boolean isSolutionInBias(Solution<V,DT> solution, Solution<V,DT>... bias){
+    private <V extends Variable<DT>> boolean isSolutionInBias(Solution<V,DT> solution, Solution<V,DT>... bias){
         for (Solution<V,DT> aBias: bias){
             if (aBias.equals(solution)){
                 return true;
@@ -64,7 +65,7 @@ public class Solver<V extends Variable<DT>, DT> {
         return false;
     }
     
-    public Solution<V, DT> solve(Solution<V,DT>... bias) {
+    public <V extends Variable<DT>> Solution<V, DT> solve(Solution<V,DT>... bias) {
         try {
             backTrack();
             Solution<V,DT> solution = solveVariables(bias);
@@ -103,7 +104,8 @@ public class Solver<V extends Variable<DT>, DT> {
             throw new TimeOutException();
         }
     }
-    private Solution<V,DT>[] cloneBias(Solution<V,DT>... bias){
+    @SuppressWarnings("unchecked")
+	private <V extends Variable<DT>> Solution<V,DT>[] cloneBias(Solution<V,DT>... bias){
         if (bias == null || bias.length == 0 ){
             return null;
         }
@@ -114,13 +116,13 @@ public class Solver<V extends Variable<DT>, DT> {
         return clone;
     }
 
-    private Solution<V,DT> solveVariables(Solution<V,DT>... bias) {
+    private <V extends Variable<DT>> Solution<V,DT> solveVariables(Solution<V,DT>... bias) {
         long start = System.currentTimeMillis();
         Solution<V,DT>[] biasClone = cloneBias(bias);
         while (!unAssignedVariables.empty()) {
             checkTimeOut(start);
             sortUnassignedVariables();
-            VariableAssignment<V, DT> next_variable_to_solve = popUnAssignedVariable();
+            VariableAssignment<DT> next_variable_to_solve = popUnAssignedVariable();
             try {
                 solveVariable(next_variable_to_solve,biasClone);
                 assignedVariables.push(next_variable_to_solve);
@@ -143,12 +145,12 @@ public class Solver<V extends Variable<DT>, DT> {
     }
 
     private void backTrack(NoMoreValuesToTryException e) {
-        VariableAssignment<V,DT> culprit = null; 
+        VariableAssignment<DT> culprit = null; 
         if (e != null){
             culprit = e.getCulprit();
         }
 
-        VariableAssignment<V, DT> last_solved_variable = assignedVariables.empty() ? null : assignedVariables.peek();
+        VariableAssignment<DT> last_solved_variable = assignedVariables.empty() ? null : assignedVariables.peek();
         if (culprit == null || 
                 (!unAssignedVariables.isEmpty() && 
                 culprit == unAssignedVariables.peek())){
@@ -171,20 +173,20 @@ public class Solver<V extends Variable<DT>, DT> {
         }
     }
     
-    private void pushUnAssignedVariable(VariableAssignment<V,DT> va){
+    private void pushUnAssignedVariable(VariableAssignment<DT> va){
         unAssignedVariables.push(va);
         va.setAssigned(false);
     }
     
-    private VariableAssignment<V,DT> popUnAssignedVariable(){
-        VariableAssignment<V,DT> ret = unAssignedVariables.pop(); 
+    private VariableAssignment<DT> popUnAssignedVariable(){
+        VariableAssignment<DT> ret = unAssignedVariables.pop(); 
         ret.setAssigned(true);
         return ret;
     }
     
 
-    private void tryNextValue(VariableAssignment<V, DT> variableAssignmentToSolve) {
-        for (Constraint c : problem.getConstraints()) {
+    private void tryNextValue(VariableAssignment<DT> variableAssignmentToSolve) {
+        for (Constraint<DT> c : problem.getConstraints()) {
             c.propagate(variableAssignmentToSolve, assignedVariables, unAssignedVariables);
         }
         if (costConstraint != null){
@@ -193,7 +195,7 @@ public class Solver<V extends Variable<DT>, DT> {
     }
 
     private Random generator = new Random();
-    private void biasAssignmentDomain(VariableAssignment<V, DT> variableAssignmentToSolve, Solution<V,DT>... bias) {
+    private <V extends Variable<DT>> void biasAssignmentDomain(VariableAssignment<DT> variableAssignmentToSolve, Solution<V,DT>... bias) {
         if (bias == null || bias.length == 0) {
             return;
         }
@@ -219,9 +221,9 @@ public class Solver<V extends Variable<DT>, DT> {
         biasAddressed.remove(v);
     }
 
-    private void solveVariable(VariableAssignment<V, DT> variableAssignmentToSolve,Solution<V,DT>... bias) {
+    private <V extends Variable<DT>> void solveVariable(VariableAssignment<DT> variableAssignmentToSolve,Solution<V,DT>... bias) {
         biasAssignmentDomain(variableAssignmentToSolve,bias);
-        VariableAssignment<V,DT>  culprit = null;
+        VariableAssignment<DT>  culprit = null;
         long start = System.currentTimeMillis();
         while (!variableAssignmentToSolve.getDomain().isEmpty()) {
             try {
@@ -243,7 +245,7 @@ public class Solver<V extends Variable<DT>, DT> {
     }
 
     private void clearCheckPoints() {
-        for (VariableAssignment<V, DT> var : unAssignedVariables) {
+        for (VariableAssignment<DT> var : unAssignedVariables) {
             var.clearCheckpoint();
         }
     }

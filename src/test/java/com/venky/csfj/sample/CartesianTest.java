@@ -48,20 +48,16 @@ public class CartesianTest {
     public void tearDown() {
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
 
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void testCartesian(){
-        Problem<IntegerVariable,Integer> p = new Problem<IntegerVariable,Integer>();
+        Problem<Integer> p = new Problem<Integer>();
         IntegerVariable x = new IntegerVariable("x", 0, 5);
         IntegerVariable y = new IntegerVariable("y", 0, 5);
         p.getVariables().add(x);
         p.getVariables().add(y);
-        Solver<IntegerVariable,Integer> s = new Solver<IntegerVariable,Integer>(p);
+        Solver<Integer> s = new Solver<Integer>(p);
         HashMap<IntegerVariable, Integer> h = s.nextSolution() ;
         int solNo = 0;
         while (h != null){
@@ -72,9 +68,10 @@ public class CartesianTest {
         assertEquals(solNo, 36);
     }
 
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void testxplusyequal6(){
-        Problem<IntegerEnumeratedVariable,Integer> p = new Problem<IntegerEnumeratedVariable,Integer>();
+        Problem<Integer> p = new Problem<Integer>();
         IntegerEnumeratedVariable x = new IntegerEnumeratedVariable("x", 0, 5);
         IntegerEnumeratedVariable y = new IntegerEnumeratedVariable("y", 0, 5);
         p.getVariables().add(x);
@@ -84,12 +81,12 @@ public class CartesianTest {
         seed.put(x, 4);
         seed.put(y, 2);
         
-        p.addConstraint(new Constraint<IntegerEnumeratedVariable,Integer>() {
-            public void propagate(VariableAssignment<IntegerEnumeratedVariable,Integer> workingAssignment, List<VariableAssignment<IntegerEnumeratedVariable,Integer>> assigned, List<VariableAssignment<IntegerEnumeratedVariable,Integer>> unassigned) throws ConstraintViolationException {
+        p.addConstraint(new Constraint<Integer>() {
+            public void propagate(VariableAssignment<Integer> workingAssignment, List<VariableAssignment<Integer>> assigned, List<VariableAssignment<Integer>> unassigned) throws ConstraintViolationException {
                 int sum = 6 ; 
                 sum -= workingAssignment.getValue();
 
-                for (VariableAssignment<IntegerEnumeratedVariable,Integer> v : assigned){
+                for (VariableAssignment<Integer> v : assigned){
                     sum -= v.getValue();
                 }
                 
@@ -98,7 +95,7 @@ public class CartesianTest {
                 }else if (sum > 0 && unassigned.isEmpty()){
                     throw new ConstraintViolationException();
                 }else if (sum > 0){
-                    for (VariableAssignment<IntegerEnumeratedVariable,Integer> uv : unassigned){
+                    for (VariableAssignment<Integer> uv : unassigned){
                         for (Iterator<Integer> di = uv.getDomain().iterator() ; di.hasNext(); ){
                             int value = di.next();
                             if (value > sum){
@@ -109,7 +106,7 @@ public class CartesianTest {
                 }
             }
         });
-        Solver<IntegerEnumeratedVariable,Integer> s = new Solver<IntegerEnumeratedVariable,Integer>(p);
+        Solver<Integer> s = new Solver<Integer>(p);
         Solution<IntegerEnumeratedVariable, Integer> h = s.solve((Solution<IntegerEnumeratedVariable, Integer>)seed) ;
         assertTrue(!seed.isEmpty());
         int solNo = 0;

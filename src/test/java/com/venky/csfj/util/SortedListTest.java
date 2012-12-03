@@ -4,19 +4,21 @@
  */
 package com.venky.csfj.util;
 
-import com.venky.csfj.util.SortedList;
-import org.junit.Test;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
@@ -81,7 +83,7 @@ public class SortedListTest {
     public void testAddAll_Collection() {
         System.out.println("addAll");
         Collection<Integer> c = new HashSet<Integer>();
-        SortedList instance = new SortedList();
+        SortedList<Integer> instance = new SortedList<Integer>();
 
         addRandomIntegers(c) ;
         boolean expResult = true;
@@ -131,7 +133,7 @@ public class SortedListTest {
     @Test
     public void testIndexOf() {
         System.out.println("indexOf");
-        SortedList instance = new SortedList();
+        SortedList<Integer> instance = new SortedList<Integer>();
         for (int i = 10 ; i >=-10 ; i--){
             instance.add(i);
         }
@@ -163,7 +165,6 @@ public class SortedListTest {
 
         result = instance.remove(Integer.valueOf(1));
         assertEquals(true, result);
-        // TODO review the generated test code and remove the default call to fail.
     }
 
     /**

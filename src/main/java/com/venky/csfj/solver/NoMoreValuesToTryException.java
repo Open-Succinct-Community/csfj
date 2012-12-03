@@ -20,19 +20,20 @@ public class NoMoreValuesToTryException extends RuntimeException{
 	public NoMoreValuesToTryException(String message){ 
         this(message,null);
     }
-    public NoMoreValuesToTryException(String message,VariableAssignment culprit) {
+    public NoMoreValuesToTryException(String message,VariableAssignment<?> culprit) {
         super(message);
         this.culprit = culprit;
     }
 
-    private final VariableAssignment culprit ; 
+    private final VariableAssignment<?> culprit ; 
     public NoMoreValuesToTryException() {
         super();
         culprit = null;
     }
 
-    public VariableAssignment getCulprit() {
-        return culprit;
+    @SuppressWarnings("unchecked")
+	public <DT> VariableAssignment<DT> getCulprit() {
+        return (VariableAssignment<DT>) culprit;
     }
     
     

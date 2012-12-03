@@ -20,7 +20,7 @@ import com.venky.csfj.solver.variable.VariableAssignment;
  *
  * @author Venky
  */
-public class Problem<V extends Variable<DT>,DT> {
+public class Problem<DT> {
     private boolean sysOutEnabled  = false;
 
     public boolean isSysOutEnabled() {
@@ -38,34 +38,34 @@ public class Problem<V extends Variable<DT>,DT> {
         }
     }
     
-    private Stack<V> variables;
-    private List<Constraint<V,DT>> constraints;
+    private Stack<Variable<DT>> variables;
+    private List<Constraint<DT>> constraints;
 
-    public Problem(List<V> variables,List<Constraint<V,DT>> constraints){
+    public Problem(List<Variable<DT>> variables,List<Constraint<DT>> constraints){
         this();
         this.variables.addAll(variables);
         this.constraints.addAll(constraints);
     }
     public Problem(){
-        this.variables = new Stack<V>();
-        this.constraints = new ArrayList<Constraint<V,DT>>();
+        this.variables = new Stack<Variable<DT>>();
+        this.constraints = new ArrayList<Constraint<DT>>();
     }
 
-    public List<Constraint<V,DT>> getConstraints() {
+    public List<Constraint<DT>> getConstraints() {
         return constraints;
     }
-    public Stack<V> getVariables() {
+    public Stack<Variable<DT>> getVariables() {
         return variables;
     }
 
-    public void addConstraint(Constraint<V,DT> c){
+    public void addConstraint(Constraint<DT> c){
         constraints.add(c);
     }
 
-    public void sortUnassignedVariables(List<VariableAssignment<V,DT>> assigned, List<VariableAssignment<V,DT>> unassigned){
-        Collections.sort(unassigned,new Comparator <VariableAssignment<V,DT>>(){
+    public void sortUnassignedVariables(List<VariableAssignment<DT>> assigned, List<VariableAssignment<DT>> unassigned){
+        Collections.sort(unassigned,new Comparator <VariableAssignment<DT>>(){
 
-            public int compare(VariableAssignment<V,DT> o1, VariableAssignment<V,DT> o2) {
+            public int compare(VariableAssignment<DT> o1, VariableAssignment<DT> o2) {
                 int ret = o2.getDomain().size() - o1.getDomain().size(); // sort decending as we are using stack 
                 if (ret == 0) {
                     ret = o2.getVariable().getName().compareTo(o1.getVariable().getName());
@@ -86,7 +86,7 @@ public class Problem<V extends Variable<DT>,DT> {
         this.timeOut = timeOut;
     }
 
-    public double getCost(VariableAssignment<V, DT> workingAssignment,List<VariableAssignment<V, DT>> assigned, List<VariableAssignment<V, DT>> unassigned){
+    public double getCost(VariableAssignment<DT> workingAssignment,List<VariableAssignment<DT>> assigned, List<VariableAssignment<DT>> unassigned){
     	return 0.0;
     }
 
@@ -100,21 +100,22 @@ public class Problem<V extends Variable<DT>,DT> {
         this.costToBeMinimized = costToBeMinimized;
     }
     
-    private Map<String,V> variableMap = new HashMap<String, V>();
+    private Map<String,Variable<DT>> variableMap = new HashMap<String, Variable<DT>>();
     private void loadVariableMap(){ 
         variableMap.clear(); 
-        for (V v : variables){
+        for (Variable<DT> v : variables){
             variableMap.put(v.getName(),v);
         }
         return;
     }
-    public V getVariable(String name){
-        V var = variableMap.get(name); 
+    @SuppressWarnings("unchecked")
+	public <V extends Variable<DT>> V getVariable(String name){
+    	Variable<DT> var = variableMap.get(name); 
         if (variableMap.isEmpty() || var == null){
             loadVariableMap();
             var = variableMap.get(name);
         }
-        return var;
+        return (V)var;
     }
 
 }

@@ -4,14 +4,15 @@
  */
 package com.venky.csfj.solver;
 
-import com.venky.csfj.solver.variable.Variable;
-import com.venky.csfj.solver.variable.VariableAssignment;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import com.venky.csfj.solver.variable.Variable;
+import com.venky.csfj.solver.variable.VariableAssignment;
 
 /**
  *
@@ -23,41 +24,44 @@ public class Solution<V extends Variable<DT>,DT> extends HashMap<V,DT> implement
 	 * 
 	 */
 	private static final long serialVersionUID = 8121089109097870863L;
-	private transient Problem<V,DT> problem = null;
+	private transient Problem<DT> problem = null;
     private transient Double cost = null; 
     
     
-    public Solution(Problem<V,DT> problem){
+    public Solution(Problem<DT> problem){
         super();
         this.problem = problem;
     }
 
     
-    public Problem<V, DT> getProblem() {
+    public Problem<DT> getProblem() {
         return problem;
     }
 
-    public void setProblem(Problem<V, DT> problem) {
+    public void setProblem(Problem<DT> problem) {
         this.problem = problem;
     }
     
-    public Solution<V,DT> merge (Collection<VariableAssignment<V,DT>> variableAssignments){
-        for (VariableAssignment<V,DT> assignment: variableAssignments){
-            put(assignment.getVariable(), assignment.getValue());
+    @SuppressWarnings("unchecked")
+	public Solution<V,DT> merge (Collection<VariableAssignment<DT>> variableAssignments){
+        for (VariableAssignment<DT> assignment: variableAssignments){
+            put((V)assignment.getVariable(), assignment.getValue());
         }
         return this;
     }
-    public Solution<V,DT> merge (VariableAssignment<V,DT>... variableAssignment){
+    @SuppressWarnings("unchecked")
+	public Solution<V,DT> merge (VariableAssignment<DT>... variableAssignment){
         for (int i = 0 ;  i < variableAssignment.length ;  i ++ ){ 
-            put(variableAssignment[i].getVariable(), variableAssignment[i].getValue());
+            put((V)variableAssignment[i].getVariable(), variableAssignment[i].getValue());
         }
         return this;
     }
 
     
-    public Solution<V,DT> merge (Map<String,DT> assignmentMap){
+    @SuppressWarnings("unchecked")
+	public Solution<V,DT> merge (Map<String,DT> assignmentMap){
         for (String name:assignmentMap.keySet()){ 
-            put(problem.getVariable(name),assignmentMap.get(name));
+            put((V)problem.getVariable(name),assignmentMap.get(name));
         }
         return this;
     }
@@ -101,7 +105,7 @@ public class Solution<V extends Variable<DT>,DT> extends HashMap<V,DT> implement
         return cost;
     }
     
-    public void setCost(double cost){
+    public void setCost(Double cost){
     	this.cost = cost;
     }
     
@@ -121,7 +125,8 @@ public class Solution<V extends Variable<DT>,DT> extends HashMap<V,DT> implement
         return super.put(key, value);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public DT remove(Object key) {
         resetComputedFields();
         return super.remove((V)key);

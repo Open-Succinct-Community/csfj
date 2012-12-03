@@ -5,14 +5,18 @@ package com.venky.csfj.sample;
  * and open the template in the editor.
  */
 
-import com.venky.csfj.sample.Sudoku;
-import com.venky.csfj.solver.Solver;
 import java.util.HashMap;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.venky.csfj.sample.Sudoku.CellVariable;
+import com.venky.csfj.solver.Solution;
+import com.venky.csfj.solver.Solver;
+import com.venky.csfj.solver.variable.Variable;
 
 /**
  *
@@ -39,7 +43,8 @@ public class SudokuTest {
     public void tearDown() {
     }
 
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void testSudoku(){
         Sudoku s = new Sudoku();
         int[][] init_values =  {
@@ -54,12 +59,14 @@ public class SudokuTest {
             {0,0,0,0,2,0,0,5,0}
         };
         s.register_initial_values(init_values);
-        Solver<Sudoku.CellVariable,Integer> solver = new Solver<Sudoku.CellVariable,Integer>(s);
-        print(solver.nextSolution());
+        Solver<Integer> solver = new Solver<Integer>(s);
+        Solution<CellVariable,Integer> solution = solver.solve();
+        print(solution);
     }
-    public void print(HashMap<Sudoku.CellVariable,Integer> h){
+    public void print(HashMap<CellVariable,Integer> h){
         int [][] solution = new int[9][9];
-        for (Sudoku.CellVariable var : h.keySet()){
+        for (Variable<Integer> v : h.keySet()){
+        	CellVariable var = (CellVariable)v;
             solution[var.row][var.col] = h.get(var);
         }
         for (int row = 0 ; row < 9 ; row ++){

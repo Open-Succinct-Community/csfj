@@ -15,19 +15,20 @@ import com.venky.csfj.util.Domain;
  *
  * @author Venky
  */
-public class VariableAssignment<V extends Variable<DT>, DT> {
+public class VariableAssignment<DT> {
 
-    private V variable;
+    private Variable<DT> variable;
     private boolean assigned = false; 
     private Stack<Checkpoint<DT>> checkpoints;
 
-    public VariableAssignment(V variable) {
+    public VariableAssignment(Variable<DT> variable) {
         this.variable = variable;
         this.checkpoints = new Stack<Checkpoint<DT>>();
     }
 
-    public V getVariable() {
-        return variable;
+    @SuppressWarnings("unchecked")
+	public <V extends Variable<DT>> V getVariable() {
+        return (V)variable;
     }
 
     public boolean isAssigned() {

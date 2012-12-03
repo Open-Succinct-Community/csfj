@@ -7,16 +7,15 @@ package com.venky.csfj.solver;
 import java.util.List;
 
 import com.venky.core.util.Bucket;
-import com.venky.csfj.solver.variable.Variable;
 import com.venky.csfj.solver.variable.VariableAssignment;
 
 /**
  *
  * @author venky
  */
-public class GenericCostConstraint<V extends Variable<DT>,DT> implements Constraint<V,DT>{
-    private final Problem<V,DT> problem; 
-    public GenericCostConstraint(Problem<V,DT> problem){
+public class GenericCostConstraint<DT> implements Constraint<DT>{
+    private final Problem<DT> problem; 
+    public GenericCostConstraint(Problem<DT> problem){
         this.problem = problem;
     }
     private Double minCost = null; 
@@ -29,8 +28,8 @@ public class GenericCostConstraint<V extends Variable<DT>,DT> implements Constra
     	return minCost;
     }
 
-    public void propagate(VariableAssignment<V, DT> workingAssignment, List<VariableAssignment<V, DT>> assigned, List<VariableAssignment<V, DT>> unassigned) throws ConstraintViolationException {
-        VariableAssignment<V, DT> lastAssignment = null; 
+    public void propagate(VariableAssignment<DT> workingAssignment, List<VariableAssignment<DT>> assigned, List<VariableAssignment<DT>> unassigned) throws ConstraintViolationException {
+        VariableAssignment<DT> lastAssignment = null; 
         Bucket costSoFar = null ;
         if (!assigned.isEmpty()) {
         	lastAssignment = assigned.get(assigned.size()-1);

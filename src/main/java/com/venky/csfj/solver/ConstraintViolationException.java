@@ -22,17 +22,18 @@ public class ConstraintViolationException extends RuntimeException{
         this(message,null);
     }
     
-    public ConstraintViolationException(String message, VariableAssignment culprit) {
+    public ConstraintViolationException(String message, VariableAssignment<?> culprit) {
         super(message);
         this.culprit = culprit;
     }
-    private final VariableAssignment culprit ;
+    private final VariableAssignment<?> culprit ;
     public ConstraintViolationException() {
         this.culprit = null;
     }
 
-    public VariableAssignment getCulprit() {
-        return culprit;
+    @SuppressWarnings("unchecked")
+	public <DT> VariableAssignment<DT> getCulprit() {
+        return (VariableAssignment<DT>) culprit;
     }
 
     
