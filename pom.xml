@@ -41,7 +41,7 @@
   <artifactId>csfj</artifactId>
   <packaging>jar</packaging>
   <name>csfj</name>
-  <version>1.3-SNAPSHOT</version>
+  <version>1.3</version>
   <description>Constraint solving framework</description>
   <url>http://maven.apache.org</url>
 
