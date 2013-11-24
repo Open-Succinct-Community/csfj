@@ -78,8 +78,8 @@
     </dependency>
     <dependency>
     	<groupId>com.github.venkatramanm</groupId>
-    	<artifactId>core</artifactId>
-      <type>pom</type>
+    	<artifactId>common</artifactId>
+      <type>jar</type>
 			<version>[1.11,)</version>
     </dependency>
   </dependencies>
